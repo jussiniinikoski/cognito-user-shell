@@ -66,6 +66,8 @@ class UserClient:
             raise AuthUserNotFoundException
         except self.aws_client.exceptions.NotAuthorizedException:
             raise AuthIncorrectUsernameOrPasswordException
+        except self.aws_client.exceptions.InvalidParameterException:
+            raise AuthIncorrectUsernameOrPasswordException
         authentication_result = response.get('AuthenticationResult', None)
         if authentication_result is not None:
             access_token = authentication_result.get("AccessToken", None)
@@ -99,6 +101,8 @@ class UserClient:
             except self.aws_client.exceptions.NotAuthorizedException:
                 raise AuthIncorrectUsernameOrPasswordException
             except self.aws_client.exceptions.InvalidPasswordException:
+                raise AuthInvalidPasswordException
+            except self.aws_client.exceptions.InvalidParameterException:
                 raise AuthInvalidPasswordException
             authentication_result = response.get('AuthenticationResult', None)
             if authentication_result is not None:

@@ -14,8 +14,7 @@ API_URL = os.environ.get("API_URL", None)
 
 
 class Shell(cmd.Cmd):
-    welcome_msg = "Welcome to Cognito User Shell."
-    intro = f'{C.CGREEN}{welcome_msg}{C.CEND} Type help or ? to list commands.\n'
+    intro = f'{C.CGREEN}Welcome to Cognito User Shell.{C.CEND} Type help or ? to list commands.\n'
     doc_header = 'Commands (type help <topic>)'
     prompt = '> '
 
