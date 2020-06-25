@@ -100,9 +100,8 @@ class UserClient:
                 raise AuthUserNotFoundException
             except self.aws_client.exceptions.NotAuthorizedException:
                 raise AuthIncorrectUsernameOrPasswordException
-            except self.aws_client.exceptions.InvalidPasswordException:
-                raise AuthInvalidPasswordException
-            except self.aws_client.exceptions.InvalidParameterException:
+            except (self.aws_client.exceptions.InvalidPasswordException,
+                    self.aws_client.exceptions.InvalidParameterException):
                 raise AuthInvalidPasswordException
             authentication_result = response.get('AuthenticationResult', None)
             if authentication_result is not None:
@@ -142,18 +141,19 @@ class UserClient:
             return
         self.check_auth()
         headers = {'Authorization': f'Bearer {self.id_token}'}
+        api_kwargs = {'headers': headers}
         if method == "GET":
             api_call = requests.get
-            api_kwargs = {'params': data, 'headers': headers}
+            api_kwargs.update({'params': data})
         elif method == "POST":
             api_call = requests.post
-            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+            api_kwargs.update({'data': data, 'json': json})
         elif method == "PUT":
             api_call = requests.put
-            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+            api_kwargs.update({'data': data, 'json': json})
         elif method == "DELETE":
             api_call = requests.delete
-            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+            api_kwargs.update({'data': data, 'json': json})
         else:
             print("Illegal API method.")
             return

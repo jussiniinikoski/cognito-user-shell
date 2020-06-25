@@ -37,10 +37,8 @@ class ExampleShell(Shell):
 
 
 if __name__ == '__main__':
-    import os
     import sys
-    COGNITO_CLIENT_ID = os.environ.get("COGNITO_CLIENT_ID", None)
-    API_URL = os.environ.get("API_URL", None)
+    from cognito_user_shell.shell import COGNITO_CLIENT_ID, API_URL
     if COGNITO_CLIENT_ID is not None and API_URL is not None:
         try:
             ExampleShell(cognito_client_id=COGNITO_CLIENT_ID, api_url=API_URL).cmdloop()
