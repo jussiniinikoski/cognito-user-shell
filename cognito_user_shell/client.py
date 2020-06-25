@@ -132,14 +132,29 @@ class UserClient:
             expires = authentication_result.get("ExpiresIn", 3600)
             self._update_expiration(expires)
 
-    def get(self, endpoint=None, data=None, callback=None, callback_kwargs=None):
-        """Call api (GET) and send response to callback."""
+    def _call(self, method='GET', endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
+        """Unified method call."""
         if endpoint is None:
             return
         self.check_auth()
         headers = {'Authorization': f'Bearer {self.id_token}'}
+        if method == "GET":
+            api_call = requests.get
+            api_kwargs = {'params': data, 'headers': headers}
+        elif method == "POST":
+            api_call = requests.post
+            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+        elif method == "PUT":
+            api_call = requests.put
+            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+        elif method == "DELETE":
+            api_call = requests.delete
+            api_kwargs = {'data': data, 'json': json, 'headers': headers}
+        else:
+            print("Illegal API method.")
+            return
         try:
-            r = requests.get(f'{self.api_url}/{endpoint}', params=data, headers=headers)
+            r = api_call(f'{self.api_url}/{endpoint}', **api_kwargs)
         except requests.exceptions.ConnectionError:
             print("Connection Error!")
             return
@@ -153,69 +168,38 @@ class UserClient:
                 return callback(r)
         else:
             return r
+
+    def get(self, endpoint=None, data=None, callback=None, callback_kwargs=None):
+        """Call api (GET) and send response to callback."""
+        return self._call("GET",
+                          endpoint=endpoint,
+                          data=data,
+                          callback=callback,
+                          callback_kwargs=callback_kwargs)
 
     def post(self, endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
         """Call api (POST) and send response to callback."""
-        if endpoint is None:
-            return
-        self.check_auth()
-        headers = {'Authorization': f'Bearer {self.id_token}'}
-        try:
-            r = requests.post(f'{self.api_url}/{endpoint}', data=data, json=json, headers=headers)
-        except requests.exceptions.ConnectionError:
-            print("Connection Error!")
-            return
-        if r.status_code == 404:
-            print("API did not respond.")
-            return
-        if callable(callback):
-            if isinstance(callback_kwargs, dict):
-                return callback(r, **callback_kwargs)
-            else:
-                return callback(r)
-        else:
-            return r
+        return self._call("POST",
+                          endpoint=endpoint,
+                          data=data,
+                          json=json,
+                          callback=callback,
+                          callback_kwargs=callback_kwargs)
 
     def put(self, endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
         """Call api (PUT) and send response to callback."""
-        if endpoint is None:
-            return
-        self.check_auth()
-        headers = {'Authorization': f'Bearer {self.id_token}'}
-        try:
-            r = requests.put(f'{self.api_url}/{endpoint}', data=data, json=json, headers=headers)
-        except requests.exceptions.ConnectionError:
-            print("Connection Error!")
-            return
-        if r.status_code == 404:
-            print("API did not respond.")
-            return
-        if callable(callback):
-            if isinstance(callback_kwargs, dict):
-                return callback(r, **callback_kwargs)
-            else:
-                return callback(r)
-        else:
-            return r
+        return self._call("PUT",
+                          endpoint=endpoint,
+                          data=data,
+                          json=json,
+                          callback=callback,
+                          callback_kwargs=callback_kwargs)
 
     def delete(self, endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
         """Call api (PUT) and send response to callback."""
-        if endpoint is None:
-            return
-        self.check_auth()
-        headers = {'Authorization': f'Bearer {self.id_token}'}
-        try:
-            r = requests.delete(f'{self.api_url}/{endpoint}', data=data, json=json, headers=headers)
-        except requests.exceptions.ConnectionError:
-            print("Connection Error!")
-            return
-        if r.status_code == 404:
-            print("API did not respond.")
-            return
-        if callable(callback):
-            if isinstance(callback_kwargs, dict):
-                return callback(r, **callback_kwargs)
-            else:
-                return callback(r)
-        else:
-            return r
+        return self._call("DELETE",
+                          endpoint=endpoint,
+                          data=data,
+                          json=json,
+                          callback=callback,
+                          callback_kwargs=callback_kwargs)
