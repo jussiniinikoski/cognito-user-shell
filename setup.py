@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'cognito-user-shell'
-DESCRIPTION = 'Shell/CLI tool with AWS Cognito authentication.'
+DESCRIPTION = 'Extendable shell/CLI tool with AWS Cognito authentication.'
 URL = 'https://github.com/jussiniinikoski/cognito-user-shell'
 EMAIL = 'jussi.niinikoski@perjantai.fi'
 AUTHOR = 'Jussi Niinikoski'

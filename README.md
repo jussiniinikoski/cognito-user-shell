@@ -1,2 +1,2 @@
 # cognito-user-shell
-Shell/CLI with AWS Cognito authentication
+## Extendable shell/CLI tool with AWS Cognito authentication
