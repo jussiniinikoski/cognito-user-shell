@@ -52,7 +52,7 @@ class UserClient:
             self.refresh_tokens()
 
     def login(self, username, password):
-        """Login user with username and password. Populate user_auth instance."""
+        """Login user with username and password."""
         try:
             response = self.aws_client.initiate_auth(
                 ClientId=self.cognito_client_id,
@@ -115,7 +115,7 @@ class UserClient:
                 self._update_expiration(expires)
 
     def refresh_tokens(self):
-        """Refresh tokens. Update user_auth instance."""
+        """Refresh tokens."""
         response = self.aws_client.initiate_auth(
             ClientId=self.cognito_client_id,
             AuthFlow='REFRESH_TOKEN_AUTH',
@@ -136,7 +136,7 @@ class UserClient:
             self._update_expiration(expires)
 
     def _call(self, method='GET', endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
-        """Unified method call."""
+        """Unified method for calling REST APIs, contains Authorization header with Cognito tokens."""
         if endpoint is None:
             return
         self.check_auth()
