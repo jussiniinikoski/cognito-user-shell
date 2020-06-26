@@ -1,7 +1,8 @@
 from cognito_user_shell.shell import Shell
 from cognito_user_shell.utils import C
 
-from example.api.user import change_password
+# noinspection PyUnresolvedReferences
+from api.user import change_password
 
 _USER_CMDS = ('changepasswd', )
 
