@@ -1,16 +1,13 @@
 import cmd
 import getpass
 import os
-import sys
 
 from cognito_user_shell.client import UserClient, AuthUserNotFoundException, AuthIncorrectUsernameOrPasswordException
 from cognito_user_shell.utils import C
 
-# Get default settings from env vars (if they exist)
+# Get login details from env vars (if they exist)
 DEFAULT_USER = os.environ.get("DEFAULT_USER", None)
 DEFAULT_USER_PASSWORD = os.environ.get("DEFAULT_USER_PASSWORD", None)
-COGNITO_CLIENT_ID = os.environ.get("COGNITO_CLIENT_ID", None)
-API_URL = os.environ.get("API_URL", None)
 
 
 class Shell(cmd.Cmd):
@@ -76,11 +73,3 @@ class Shell(cmd.Cmd):
         self.logged_in = False
         self.username = 'anonymous'
         print("Logged out.")
-
-
-if __name__ == '__main__':
-    if COGNITO_CLIENT_ID is not None and API_URL is not None:
-        try:
-            Shell(cognito_client_id=COGNITO_CLIENT_ID, api_url=API_URL).cmdloop()
-        except KeyboardInterrupt:
-            sys.stdout.write('\n')
