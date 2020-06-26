@@ -12,8 +12,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jussiniinikoski/cognito-user-shell",
-    packages=setuptools.find_packages(exclude=["tests", "example"]),
-    install_requires=['boto3', 'requests'],
+    packages=['cognito_user_shell', ],
+    install_requires=['boto3', 'requests', ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
