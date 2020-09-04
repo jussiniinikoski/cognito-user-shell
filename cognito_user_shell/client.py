@@ -151,6 +151,9 @@ class UserClient:
         elif method == "PUT":
             api_call = requests.put
             api_kwargs.update({'data': data, 'json': json})
+        elif method == "PATCH":
+            api_call = requests.patch
+            api_kwargs.update({'data': data, 'json': json})
         elif method == "DELETE":
             api_call = requests.delete
             api_kwargs.update({'data': data, 'json': json})
@@ -199,8 +202,17 @@ class UserClient:
                           callback=callback,
                           callback_kwargs=callback_kwargs)
 
+    def patch(self, endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
+        """Call api (PATCH) and send response to callback."""
+        return self._call("PATCH",
+                          endpoint=endpoint,
+                          data=data,
+                          json=json,
+                          callback=callback,
+                          callback_kwargs=callback_kwargs)
+
     def delete(self, endpoint=None, data=None, json=None, callback=None, callback_kwargs=None):
-        """Call api (PUT) and send response to callback."""
+        """Call api (DELETE) and send response to callback."""
         return self._call("DELETE",
                           endpoint=endpoint,
                           data=data,
