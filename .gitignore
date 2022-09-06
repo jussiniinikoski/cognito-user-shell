@@ -131,3 +131,6 @@ dmypy.json
 # IDES
 .vscode
 .idea
+
+# other
+run_example.sh
