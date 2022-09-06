@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cognito-user-shell",  # Replace with your own username
-    version="0.1.6",
+    version="0.1.7",
     author="Jussi Niinikoski",
     author_email="jussi.niinikoski@perjantai.fi",
     description="Extendable shell/CLI tool with AWS Cognito authentication.",
