@@ -125,7 +125,7 @@ class UserClient:
             except self.aws_client.exceptions.NotAuthorizedException:
                 raise AuthIncorrectUsernameOrPasswordException
             except (
-                self.aws_client.exceptions.InvalidPasswordException,
+                self.aws_client.exceptions.CodeMismatchException,
                 self.aws_client.exceptions.InvalidParameterException,
             ):
                 raise AuthInvalidPasswordException
