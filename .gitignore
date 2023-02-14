@@ -133,4 +133,5 @@ dmypy.json
 .idea
 
 # other
+.DS_Store
 run_example.sh

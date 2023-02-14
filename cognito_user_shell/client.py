@@ -67,19 +67,7 @@ class UserClient:
             raise AuthIncorrectUsernameOrPasswordException
         except self.aws_client.exceptions.InvalidParameterException:
             raise AuthIncorrectUsernameOrPasswordException
-        authentication_result = response.get("AuthenticationResult", None)
-        if authentication_result is not None:
-            access_token = authentication_result.get("AccessToken", None)
-            refresh_token = authentication_result.get("RefreshToken", None)
-            id_token = authentication_result.get("IdToken", None)
-            self._update_tokens(
-                access_token=access_token,
-                refresh_token=refresh_token,
-                id_token=id_token,
-            )
-            expires = authentication_result.get("ExpiresIn", 3600)
-            self._update_expiration(expires)
-        elif response.get("ChallengeName", None) == "NEW_PASSWORD_REQUIRED":
+        if response.get("ChallengeName", None) == "NEW_PASSWORD_REQUIRED":
             session = response.get("Session", None)
             print("New password required.\n")
             new_password = getpass.getpass("Enter new password: ")
@@ -106,7 +94,6 @@ class UserClient:
                 self.aws_client.exceptions.InvalidParameterException,
             ):
                 raise AuthInvalidPasswordException
-            authentication_result = response.get("AuthenticationResult", None)
         elif response.get("ChallengeName", None) == "SOFTWARE_TOKEN_MFA":
             session = response.get("Session", None)
             otp = getpass.getpass("Enter one-time password: ")
@@ -129,7 +116,7 @@ class UserClient:
                 self.aws_client.exceptions.InvalidParameterException,
             ):
                 raise AuthInvalidPasswordException
-            authentication_result = response.get("AuthenticationResult", None)
+        authentication_result = response.get("AuthenticationResult", None)
         if authentication_result is not None:
             access_token = authentication_result.get("AccessToken", None)
             refresh_token = authentication_result.get("RefreshToken", None)
